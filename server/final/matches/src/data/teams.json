@@ -1,0 +1,17 @@
+[
+    {
+        "id": "team#1",
+        "name": "Manchester City",
+        "country": "England"
+    },
+    {
+        "id": "team#2",
+        "name": "Bayern München",
+        "country": "Germany"
+    },
+    {
+        "id": "team#3",
+        "name": "Real Madrid",
+        "country": "Spain"
+    }
+]

@@ -1,0 +1,5 @@
+{
+  "jest.autoRun": "off",
+    "jest.jestCommandLine": "yarn test",
+    "jest.virtualFolders": []
+}

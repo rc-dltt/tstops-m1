@@ -1,0 +1,194 @@
+schema
+  @link(url: "https://specs.apollo.dev/link/v1.0")
+  @link(url: "https://specs.apollo.dev/join/v0.3", for: EXECUTION)
+{
+  query: Query
+  mutation: Mutation
+}
+
+directive @join__enumValue(graph: join__Graph!) repeatable on ENUM_VALUE
+
+directive @join__field(graph: join__Graph, requires: join__FieldSet, provides: join__FieldSet, type: String, external: Boolean, override: String, usedOverridden: Boolean) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @join__graph(name: String!, url: String!) on ENUM_VALUE
+
+directive @join__implements(graph: join__Graph!, interface: String!) repeatable on OBJECT | INTERFACE
+
+directive @join__type(graph: join__Graph!, key: join__FieldSet, extension: Boolean! = false, resolvable: Boolean! = true, isInterfaceObject: Boolean! = false) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
+
+directive @join__unionMember(graph: join__Graph!, member: String!) repeatable on UNION
+
+directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
+
+input AddHorseInput
+  @join__type(graph: RACES)
+{
+  name: String!
+  rank: Int
+}
+
+input AddMatchInput
+  @join__type(graph: MATCHES)
+{
+  no: Int
+  startTime: String!
+  venue: String!
+  country: String!
+  homeTeam: ID!
+  visitorsTeam: ID!
+}
+
+input AddPlayerInput
+  @join__type(graph: MATCHES)
+{
+  name: String!
+  age: Int
+  team: ID
+}
+
+input AddRaceInput
+  @join__type(graph: RACES)
+{
+  no: Int
+  startTime: String!
+  venue: String
+}
+
+input AddTeamInput
+  @join__type(graph: MATCHES)
+{
+  name: String!
+  country: String!
+}
+
+input AddUserInput
+  @join__type(graph: USERS)
+{
+  name: String!
+  email: String!
+  password: String!
+  roles: [String!]!
+}
+
+input EnrollHorseInput
+  @join__type(graph: RACES)
+{
+  race: ID!
+  horse: ID!
+}
+
+type FootballMatch
+  @join__type(graph: MATCHES, key: "id")
+{
+  id: ID!
+  no: Int
+  startTime: String!
+  venue: String!
+  country: String!
+  homeTeam: Team!
+  visitorsTeam: Team!
+}
+
+type Horse
+  @join__type(graph: RACES, key: "id")
+{
+  id: ID!
+  name: String!
+  rank: Int
+  race: Race
+}
+
+scalar join__FieldSet
+
+enum join__Graph {
+  MATCHES @join__graph(name: "matches", url: "http://localhost:4002/graphql")
+  RACES @join__graph(name: "races", url: "http://localhost:4001/graphql")
+  USERS @join__graph(name: "users", url: "http://localhost:4003/graphql")
+}
+
+input JoinTeamInput
+  @join__type(graph: MATCHES)
+{
+  player: ID!
+  team: ID!
+}
+
+scalar link__Import
+
+enum link__Purpose {
+  """
+  `SECURITY` features provide metadata necessary to securely resolve fields.
+  """
+  SECURITY
+
+  """
+  `EXECUTION` features provide metadata necessary for operation execution.
+  """
+  EXECUTION
+}
+
+type Mutation
+  @join__type(graph: MATCHES)
+  @join__type(graph: RACES)
+  @join__type(graph: USERS)
+{
+  addTeam(command: AddTeamInput!): Team @join__field(graph: MATCHES)
+  addPlayer(command: AddPlayerInput!): Player @join__field(graph: MATCHES)
+  joinTeam(command: JoinTeamInput!): Player @join__field(graph: MATCHES)
+  addMatch(command: AddMatchInput!): FootballMatch @join__field(graph: MATCHES)
+  addRace(command: AddRaceInput!): Race! @join__field(graph: RACES)
+  addHorse(command: AddHorseInput!): Horse! @join__field(graph: RACES)
+  enrollHorse(command: EnrollHorseInput!): Horse! @join__field(graph: RACES)
+  login(email: String!, password: String!): String @join__field(graph: USERS)
+  addUser(command: AddUserInput!): User! @join__field(graph: USERS)
+}
+
+type Player
+  @join__type(graph: MATCHES, key: "id")
+{
+  id: ID!
+  name: String!
+  age: Int
+  team: Team
+}
+
+type Query
+  @join__type(graph: MATCHES)
+  @join__type(graph: RACES)
+  @join__type(graph: USERS)
+{
+  matches: [FootballMatch]! @join__field(graph: MATCHES)
+  teams: [Team]! @join__field(graph: MATCHES)
+  players: [Player]! @join__field(graph: MATCHES)
+  races: [Race!]! @join__field(graph: RACES)
+  horses: [Horse!]! @join__field(graph: RACES)
+  users: [User!]! @join__field(graph: USERS)
+}
+
+type Race
+  @join__type(graph: RACES, key: "id")
+{
+  id: ID!
+  no: Int
+  startTime: String!
+  venue: String!
+  horses: [Horse]!
+}
+
+type Team
+  @join__type(graph: MATCHES, key: "id")
+{
+  id: ID!
+  name: String!
+  country: String!
+  players: [Player!]!
+}
+
+type User
+  @join__type(graph: USERS, key: "id")
+{
+  id: ID!
+  name: String!
+  email: String!
+  roles: [String!]!
+}

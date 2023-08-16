@@ -1,0 +1,16 @@
+{
+    "jest.virtualFolders": [
+        {
+            "name": "kotlin",
+            "rootPath": "kotlin"
+        },
+        {
+            "name": "react",
+            "rootPath": "react"
+        },
+        {
+            "name": "server",
+            "rootPath": "server"
+        }
+    ]
+}

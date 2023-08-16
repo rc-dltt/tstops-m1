@@ -1,0 +1,49 @@
+version: '3.8'
+
+services: 
+  races:
+    build:
+      context: ./races
+      dockerfile: Dockerfile
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: ${RACES_PORT}
+    ports:
+      - ${RACES_PORT}:${RACES_PORT}
+
+  matches:
+    build:
+      context: ./matches
+      dockerfile: Dockerfile
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: ${MATCHES_PORT}
+    ports:
+      - ${MATCHES_PORT}:${MATCHES_PORT}
+
+  users:
+    build:
+      context: ./users
+      dockerfile: Dockerfile
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: ${USERS_PORT}
+    ports:
+      - ${USERS_PORT}:${USERS_PORT}
+
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: ${GATEWAY_PORT}
+    ports:
+      - ${GATEWAY_PORT}:${GATEWAY_PORT}
+    depends_on:
+      - users
+      - races
+      - matches
+
+networks:
+  graphql-cluster:
