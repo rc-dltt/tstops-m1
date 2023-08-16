@@ -1,10 +1,16 @@
 import { React, useState } from 'react';
-import { SafeAreaView, Text } from 'react-native';
+import { SafeAreaView, Text, useColorScheme } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { useMutation } from '@apollo/client';
 import { loginMutation } from '../graphql/mutation';
 
 const LoginPage = ({ onLogin }) => {
+    const isDarkMode = useColorScheme() === 'dark';
+    const backgroundStyle = {
+        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    };
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loginUser, { error }] = useMutation(loginMutation);
@@ -12,7 +18,8 @@ const LoginPage = ({ onLogin }) => {
     const login = async () => {
       try {
         const { data } = await loginUser({ variables: { email, password } });
-        await AsyncStorage.setItem('jwtToken', data.loginUser.token);
+
+        await AsyncStorage.setItem('token', data.login);
         onLogin(); // Notify the parent component that the login was successful
       } catch (err) {
         console.log(err);

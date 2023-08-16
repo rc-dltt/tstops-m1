@@ -1,4 +1,4 @@
-import { React } from 'react';
+import { React, useState } from 'react';
 import { ApolloProvider } from '@apollo/client';
 import { PaperProvider } from 'react-native-paper';
 import LandingPage from './Components/LandingPage';

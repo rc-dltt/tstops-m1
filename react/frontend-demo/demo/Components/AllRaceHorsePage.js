@@ -13,7 +13,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import {
     allRaceQuery,
     allHorseQuery
-} from './query';
+} from '../graphql/query';
 
 const AllRaceHorsePage = () => {
     const isDarkMode = useColorScheme() === 'dark';

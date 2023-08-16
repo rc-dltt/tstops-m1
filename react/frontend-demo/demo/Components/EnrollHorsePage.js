@@ -4,13 +4,18 @@ import {
     ScrollView,
     View,
     TextInput,
-    Button
+    Button,
+    useColorScheme
 } from 'react-native';
 import { useMutation } from '@apollo/client';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { enrollHorseMutation } from '../mutation';
+import { enrollHorseMutation } from '../graphql/mutation';
 
 const EnrollHorse = () => {
+    const isDarkMode = useColorScheme() === 'dark';
+    const backgroundStyle = {
+        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    };
 
     ////////// Mutations //////////////
     const [enrollHorse] = useMutation(enrollHorseMutation);

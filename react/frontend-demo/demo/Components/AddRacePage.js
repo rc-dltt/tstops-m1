@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import {
     SafeAreaView,
+    useColorScheme,
     ScrollView,
     View,
     TextInput,
@@ -8,9 +9,13 @@ import {
 } from 'react-native';
 import { useMutation } from '@apollo/client';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { addRaceMutation } from './mutation';
+import { addRaceMutation } from '../graphql/mutation';
 
 const AddRacePage = () => {
+    const isDarkMode = useColorScheme() === 'dark';
+    const backgroundStyle = {
+        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    };
 
     ////////// Mutations //////////////
     const [addRace] = useMutation(addRaceMutation);

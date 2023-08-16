@@ -52,5 +52,6 @@ const enrollHorseMutation = gql`
 export {
     addRaceMutation,
     addHorseMutation,
-    enrollHorseMutation
+    enrollHorseMutation,
+    loginMutation
   };

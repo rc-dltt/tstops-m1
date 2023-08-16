@@ -12,9 +12,13 @@ import {
 } from 'react-native';
 import { useMutation } from '@apollo/client';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { addHorseMutation } from './mutation';
+import { addHorseMutation } from '../graphql/mutation';
 
 const AddHorsePage = () => {
+    const isDarkMode = useColorScheme() === 'dark';
+    const backgroundStyle = {
+        backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    };
 
     ////////// Mutations //////////////
     const [addHorse] = useMutation(addHorseMutation);
