@@ -1,3 +1,0 @@
-# Races
-
-sample graphql app
