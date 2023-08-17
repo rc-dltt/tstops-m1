@@ -14,6 +14,9 @@ import AddRacePage from './AddRacePage';
 import AddHorsePage from './AddHorsePage';
 import EnrollHorsePage from './EnrollHorsePage';
 
+import RegisterPage from './RegisterPage';
+import ListUsersPage from './ListUsersPage';
+
 
 
 const LandingPage = () => {
@@ -27,14 +30,19 @@ const LandingPage = () => {
         { key: 'allRaceHorse', title: 'All Races/Horses' },
         { key: 'addRace', title: 'Add Race'},
         { key: 'addHorse', title: 'Add Horse'},
-        { key: 'enrollHorse', title: 'Enroll Horse' }
+        { key: 'enrollHorse', title: 'Enroll Horse' },
+
+        { key: 'listUsers', title: 'List Users' },
+        { key: 'registerUser', title: 'Register User' },
     ]);
 
     const renderScene = BottomNavigation.SceneMap({
-        allRaceHorse: AllRaceHorsePage,
-        addRace: AddRacePage,
-        addHorse: AddHorsePage,
-        enrollHorse: EnrollHorsePage,
+      allRaceHorse: AllRaceHorsePage,
+      addRace: AddRacePage,
+      addHorse: AddHorsePage,
+      enrollHorse: EnrollHorsePage,
+      listUsers: ListUsersPage,
+      registerUser: RegisterPage,
     });
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
