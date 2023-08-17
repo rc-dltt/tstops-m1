@@ -34,7 +34,11 @@ export const resolvers = {
     login(_, { email, password }, { dataSources }) {
       const { id, roles } = dataSources.users
         .list()
-        .find((user) => user.email === email && user.password === password);
+        .find(
+          (user) =>
+            user.email.toLowerCase() === email.toLowerCase() &&
+            user.password === password
+        );
       return sign({ id, roles }, process.env.JWT_SECRET, {
         algorithm: "HS256",
         subject: id,
