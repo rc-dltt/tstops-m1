@@ -61,15 +61,6 @@ input AddTeamInput
   country: String!
 }
 
-input AddUserInput
-  @join__type(graph: USERS)
-{
-  name: String!
-  email: String!
-  password: String!
-  roles: [String!]!
-}
-
 input EnrollHorseInput
   @join__type(graph: RACES)
 {
@@ -101,9 +92,9 @@ type Horse
 scalar join__FieldSet
 
 enum join__Graph {
-  MATCHES @join__graph(name: "matches", url: "http://localhost:4002/graphql")
-  RACES @join__graph(name: "races", url: "http://localhost:4001/graphql")
-  USERS @join__graph(name: "users", url: "http://localhost:4003/graphql")
+  MATCHES @join__graph(name: "matches", url: "http://matches:4002/graphql")
+  RACES @join__graph(name: "races", url: "http://races:4001/graphql")
+  USERS @join__graph(name: "users", url: "http://users:4003/graphql")
 }
 
 input JoinTeamInput
@@ -140,7 +131,7 @@ type Mutation
   addHorse(command: AddHorseInput!): Horse! @join__field(graph: RACES)
   enrollHorse(command: EnrollHorseInput!): Horse! @join__field(graph: RACES)
   login(email: String!, password: String!): String @join__field(graph: USERS)
-  addUser(command: AddUserInput!): User! @join__field(graph: USERS)
+  register(command: RegisterInput!): User! @join__field(graph: USERS)
 }
 
 type Player
@@ -173,6 +164,15 @@ type Race
   startTime: String!
   venue: String!
   horses: [Horse]!
+}
+
+input RegisterInput
+  @join__type(graph: USERS)
+{
+  name: String!
+  email: String!
+  password: String!
+  roles: [String!]!
 }
 
 type Team
