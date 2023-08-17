@@ -44,8 +44,8 @@ const AllRaceHorsePage = () => {
         }
     }, []);
 
-    console.log(raceDataResult, 'RCDATA');
-    console.log(horseData, 'HORSEDATA');
+    console.log(allRaceErr, 'err');
+    // console.log(horseData, 'HORSEDATA');
     //////////////////////////////// Event Handlers //////////////////////////////////
 
     // Races Query
