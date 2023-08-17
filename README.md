@@ -17,7 +17,7 @@ Mobile Applications and the BFF Architecture using GraphQL​
 extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key", "@shareable"])
 
 type Query {
-    users: [User!]!
+    users(first: Int = 10, after: ID): [User!]!
 }
 
 type Mutation {
@@ -46,8 +46,8 @@ type User @key(fields: "id") {
 extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key", "@shareable"])
 
 type Query {
-    races: [Race!]!
-    horses: [Horse!]!
+    races(first: Int = 10, after: ID): [Race!]!
+    horses(first: Int = 10, after: ID): [Horse!]!
 }
 
 type Mutation {
@@ -94,9 +94,9 @@ type Horse @key(fields: "id") {
 extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key", "@shareable"])
 
 type Query {
-    matches: [FootballMatch]!
-    teams: [Team]!
-    players: [Player]!
+    matches(first: Int = 10, after: ID): [FootballMatch]!
+    teams(first: Int = 10, after: ID): [Team]!
+    players(first: Int = 10, after: ID): [Player]!
 }
 
 type Mutation {
@@ -225,4 +225,22 @@ To tear-down the containers:
 
 ```bash
 make server-down
+```
+
+Build iOS client
+
+```bash
+make client-build-ios
+```
+
+Run iOS client
+
+```bash
+make client-ios
+```
+
+Run both server federated graph and iOS client
+
+```bash
+make run-ios
 ```
