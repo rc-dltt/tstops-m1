@@ -13,19 +13,28 @@ const requireRole = (role, principal, usersCollection) => {
     );
 };
 
+function paginate(set, { first, after }) {
+  const collection = set.list();
+  const item = set.get(after);
+  const index = collection.indexOf(item);
+  const start = index === -1 ? 0 : index + 1;
+  const end = start + first;
+  return collection.slice(start, end);
+}
+
 export const resolvers = {
   Query: {
-    matches: (_, __, { dataSources, principal }) => {
+    matches: (_, { first, after }, { dataSources, principal }) => {
       requireRole("user", principal, dataSources.users);
-      return dataSources.matches.list();
+      return paginate(dataSources.matches, { first, after });
     },
-    teams: (_, __, { dataSources, principal }) => {
+    teams: (_, { first, after }, { dataSources, principal }) => {
       requireRole("user", principal, dataSources.users);
-      return dataSources.teams.list();
+      return paginate(dataSources.teams, { first, after });
     },
-    players: (_, __, { dataSources, principal }) => {
+    players: (_, { first, after }, { dataSources, principal }) => {
       requireRole("user", principal, dataSources.users);
-      return dataSources.players.list();
+      return paginate(dataSources.players, { first, after });
     },
   },
   Mutation: {

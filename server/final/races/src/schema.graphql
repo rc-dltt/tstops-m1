@@ -1,8 +1,8 @@
 extend schema @link(url: "https://specs.apollo.dev/federation/v2.0", import: ["@key", "@shareable"])
 
 type Query {
-    races: [Race!]!
-    horses: [Horse!]!
+    races(first: Int = 10, after: ID): [Race!]!
+    horses(first: Int = 10, after: ID): [Horse!]!
 }
 
 type Mutation {

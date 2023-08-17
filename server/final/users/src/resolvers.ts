@@ -14,11 +14,20 @@ const requireRole = (role, principal, usersCollection) => {
     );
 };
 
+function paginate(set, { first, after }) {
+  const collection = set.list();
+  const item = set.get(after);
+  const index = collection.indexOf(item);
+  const start = index === -1 ? 0 : index + 1;
+  const end = start + first;
+  return collection.slice(start, end);
+}
+
 export const resolvers = {
   Query: {
-    users: (_, __, { dataSources, principal }) => {
+    users: (_, { first, after }, { dataSources, principal }) => {
       requireRole("admin", principal, dataSources.users);
-      return dataSources.users.list();
+      return paginate(dataSources.users, { first, after });
     },
   },
   Mutation: {

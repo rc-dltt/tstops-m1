@@ -148,12 +148,12 @@ type Query
   @join__type(graph: RACES)
   @join__type(graph: USERS)
 {
-  matches: [FootballMatch]! @join__field(graph: MATCHES)
-  teams: [Team]! @join__field(graph: MATCHES)
-  players: [Player]! @join__field(graph: MATCHES)
-  races: [Race!]! @join__field(graph: RACES)
-  horses: [Horse!]! @join__field(graph: RACES)
-  users: [User!]! @join__field(graph: USERS)
+  matches(first: Int = 10, after: ID): [FootballMatch]! @join__field(graph: MATCHES)
+  teams(first: Int = 10, after: ID): [Team]! @join__field(graph: MATCHES)
+  players(first: Int = 10, after: ID): [Player]! @join__field(graph: MATCHES)
+  races(first: Int = 10, after: ID): [Race!]! @join__field(graph: RACES)
+  horses(first: Int = 10, after: ID): [Horse!]! @join__field(graph: RACES)
+  users(first: Int = 10, after: ID): [User!]! @join__field(graph: USERS)
 }
 
 type Race

@@ -13,15 +13,25 @@ const requireRole = (role, principal, usersCollection) => {
     );
 };
 
+function paginate(set, {first, after}) {
+    const collection = set.list();
+    const item = set.get(after);
+    const index = collection.indexOf(item);
+    const start = index === -1 ?  0 : index + 1;
+    const end = start + first;
+    return collection.slice(start, end);
+}
+
 export const resolvers = {
   Query: {
-    races: (_, __, { dataSources, principal }) => {
+    races: (_, { first, after }, { dataSources, principal }) => {
       requireRole("user", principal, dataSources.users);
-      return dataSources.races.list();
+      return paginate(dataSources.races, { first, after });
     },
-    horses: (_, __, { dataSources, principal }) => {
+    horses: (_, { first, after }, { dataSources, principal }) => {
       requireRole("user", principal, dataSources.users);
-      return dataSources.horses.list();
+      const horses = dataSources.horses.list();
+      return paginate(dataSources.horses, { first, after });
     },
   },
   Mutation: {
