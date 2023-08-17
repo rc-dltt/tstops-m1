@@ -3,6 +3,7 @@ import { SafeAreaView, Text, useColorScheme } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { useMutation } from '@apollo/client';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { loginMutation } from '../graphql/mutation';
 
 const LoginPage = ({ onLogin }) => {
@@ -18,7 +19,7 @@ const LoginPage = ({ onLogin }) => {
     const login = async () => {
       try {
         const { data } = await loginUser({ variables: { email, password } });
-
+        console.log(data,'data');
         await AsyncStorage.setItem('token', data.login);
         onLogin(); // Notify the parent component that the login was successful
       } catch (err) {

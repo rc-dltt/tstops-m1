@@ -3,11 +3,19 @@ import { setContext } from "apollo-link-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const httpLink = createHttpLink({
-  uri: process.env.GRAPHQL_ENDPOINT,
+//   uri: process.env.GRAPHQL_ENDPOINT,
+  uri: "http://localhost:4001/"
 });
+const getToken = async () => {
+    return await AsyncStorage.getItem('token');
+  };
+
+
+console.log(process.env.GRAPHQL_ENDPOINT, 'EP')
 
 const authLink = setContext(async (_, { headers }) => {
-  const token = await AsyncStorage.getItem('token');
+  const token = await getToken();
+  console.log(token,'tk')
   return {
     headers: {
       ...headers,

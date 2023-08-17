@@ -88,5 +88,50 @@ const AddHorsePage = () => {
     );
 
 };
+const Section = (props) => {
+    return (
+        <View style={styles.sectionContainer}>
+            <Text
+                style={[
+                    styles.sectionTitle,
+                    {
+                        color: props.isDarkMode ? Colors.white : Colors.black,
+                    },
+                ]}>
+                {props.title}
+            </Text>
+            <Text
+                style={[
+                    styles.sectionDescription,
+                    {
+                        color: props.isDarkMode ? Colors.light : Colors.dark,
+                    },
+                ]}>
+                {props.children}
+            </Text>
+        </View>
+    );
+};
+const styles = StyleSheet.create({
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+    },
+    sectionContainer: {
+        marginTop: 32,
+        paddingHorizontal: 24,
+    },
+    sectionTitle: {
+        fontSize: 24,
+        fontWeight: '600',
+    },
+    sectionDescription: {
+        marginTop: 8,
+        fontSize: 18,
+        fontWeight: '400',
+    }
+});
 
 export default AddHorsePage;

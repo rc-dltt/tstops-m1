@@ -4,14 +4,15 @@ import {
     ScrollView,
     StatusBar,
     StyleSheet,
-    useColorScheme
+    useColorScheme,
+    Text
 } from 'react-native';
-import { BottomNavigation } from 'react-native-paper';
+import {BottomNavigation} from 'react-native-paper';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AllRaceHorsePage from './AllRaceHorsePage';
 import AddRacePage from './AddRacePage';
 import AddHorsePage from './AddHorsePage';
-import EnrollHorse from './EnrollHorsePage';
+import EnrollHorsePage from './EnrollHorsePage';
 
 
 
@@ -23,39 +24,28 @@ const LandingPage = () => {
 
     const [index, setIndex] = useState(0);
     const [routes] = useState([
-        { key: 'allRaceHorse', title: 'All Races/Horses', focusedIcon: 'heart', unfocusedIcon: 'heart-outline' },
-        { key: 'addRace', title: 'Add Race', focusedIcon: 'album' },
-        { key: 'addHorse', title: 'Add Horse', focusedIcon: 'history' },
-        { key: 'enrollHorse', title: 'Enroll Horse', focusedIcon: 'bell', unfocusedIcon: 'bell-outline' },
+        { key: 'allRaceHorse', title: 'All Races/Horses' },
+        { key: 'addRace', title: 'Add Race'},
+        { key: 'addHorse', title: 'Add Horse'},
+        { key: 'enrollHorse', title: 'Enroll Horse' }
     ]);
 
     const renderScene = BottomNavigation.SceneMap({
         allRaceHorse: AllRaceHorsePage,
         addRace: AddRacePage,
         addHorse: AddHorsePage,
-        enrollHorse: EnrollHorse,
+        enrollHorse: EnrollHorsePage,
     });
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    return (
-        <SafeAreaView style={backgroundStyle}>
-            <StatusBar
-                barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-                backgroundColor={backgroundStyle.backgroundColor}
-            />
-            {/* <ScrollView
-                contentInsetAdjustmentBehavior="automatic"
-                style={backgroundStyle}> */}
+    return (         
                 <BottomNavigation
                     navigationState={{ index, routes }}
                     onIndexChange={setIndex}
                     renderScene={renderScene}
                 />
-            {/* </ScrollView> */}
-        </SafeAreaView>
     );
-
 };
 
 const styles = StyleSheet.create({

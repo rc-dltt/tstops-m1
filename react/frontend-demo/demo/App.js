@@ -12,6 +12,7 @@ const App = () => {
   const handleLogin = () => {
     setLoggedIn(true);
   };
+  console.log(loggedIn, 'login')
 
   return (
     <ApolloProvider client={client}>

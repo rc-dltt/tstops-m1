@@ -25,6 +25,7 @@ const AllRaceHorsePage = () => {
     const { loading: raceDataLoading, data: raceData, error: allRaceErr } = useQuery(allRaceQuery);
     const { loading: horseDataLoading, data: horseData, error: allHorseErr } = useQuery(allHorseQuery);
 
+    
     // Query Init States
     const [raceDataResult, setRaceDataResult] = useState([]);
     const [horseDataResult, setHorseDataResult] = useState([]);
@@ -34,15 +35,17 @@ const AllRaceHorsePage = () => {
         if (!raceDataLoading && raceData && raceData.races.length > 0) {
             setRaceDataResult(raceData.races);
         }
-    }, [raceData]);
+    }, []);
 
     // All Horse
     useEffect(() => {
         if (!horseDataLoading && horseData && horseData.horses.length > 0) {
             setHorseDataResult(horseData.horses);
         }
-    }, [horseData]);
+    }, []);
 
+    console.log(raceDataResult, 'RCDATA');
+    console.log(horseData, 'HORSEDATA');
     //////////////////////////////// Event Handlers //////////////////////////////////
 
     // Races Query
@@ -99,21 +102,24 @@ const AllRaceHorsePage = () => {
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
-        // <SafeAreaView style={backgroundStyle}>
+        <SafeAreaView 
+        // // style={backgroundStyle}
+        >
             <ScrollView
                 contentInsetAdjustmentBehavior="automatic"
-                style={backgroundStyle}>
+                // style={backgroundStyle}
+                >
 
-                {/* Query - All Races */}
+                {/* // Query - All Races */}
                 <View
                     style={{
                         backgroundColor: isDarkMode ? Colors.black : Colors.white,
                     }}>
                     <Section title="Query - All Races" isDarkMode={isDarkMode}>
                         Details of all races.
-                    </Section>
+                </Section>
                 </View>
-                <TableRaces />
+                 <TableRaces />
 
                 {/* Query - All Horses */}
 
@@ -126,12 +132,8 @@ const AllRaceHorsePage = () => {
                     </Section>
                 </View>
                 <TableHorses />
-
-                <View>
-                    
-                </View>
             </ScrollView>
-        // </SafeAreaView>
+        </SafeAreaView>
     );
 
 };
