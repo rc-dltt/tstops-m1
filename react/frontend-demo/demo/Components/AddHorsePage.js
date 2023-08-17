@@ -1,8 +1,6 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState } from 'react';
 import {
-    SafeAreaView,
     ScrollView,
-    StatusBar,
     StyleSheet,
     Text,
     useColorScheme,
@@ -54,7 +52,6 @@ const AddHorsePage = () => {
     };
 
     return (
-        // <SafeAreaView style={backgroundStyle}>
         <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
@@ -83,7 +80,6 @@ const AddHorsePage = () => {
                 keyboardType="default"
             />
             <Button title="Submit" onPress={handleSubmitAddHorse} />
-        {/* // </SafeAreaView> */}
         </ScrollView>
     );
 

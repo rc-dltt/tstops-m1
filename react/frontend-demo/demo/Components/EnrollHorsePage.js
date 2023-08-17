@@ -1,6 +1,5 @@
-import { React, useState, useEffect } from 'react';
+import { React, useState } from 'react';
 import {
-    SafeAreaView,
     StyleSheet,
     Text,
     ScrollView,
@@ -53,7 +52,6 @@ const EnrollHorse = () => {
     };
 
     return (
-        // <SafeAreaView style={backgroundStyle}>
         <ScrollView
             contentInsetAdjustmentBehavior="automatic"
             style={backgroundStyle}>
@@ -82,7 +80,6 @@ const EnrollHorse = () => {
             />
             <Button title="Submit" onPress={handleSubmitEnrollHorse} />
         </ScrollView>
-        // </SafeAreaView>
     );
 
 };

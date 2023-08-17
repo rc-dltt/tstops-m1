@@ -1,15 +1,15 @@
-import { React, useState, useEffect } from 'react';
+import { React } from 'react';
 import {
-    SafeAreaView,
     ScrollView,
     StyleSheet,
     Text,
     useColorScheme,
     View
 } from 'react-native';
-import { DataTable } from 'react-native-paper';
+import CustomDataTable from './CustomDataTable';
 import { useQuery } from '@apollo/client';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
     allRaceQuery,
     allHorseQuery
@@ -22,120 +22,80 @@ const AllRaceHorsePage = () => {
     };
 
     //////////// Queries ///////////////
-    const { loading: raceDataLoading, data: raceData, error: allRaceErr } = useQuery(allRaceQuery);
-    const { loading: horseDataLoading, data: horseData, error: allHorseErr } = useQuery(allHorseQuery);
+    const { loading: raceDataLoading, data: raceData, error: raceDataErr } = useQuery(allRaceQuery);
+    const { loading: horseDataLoading, data: horseData, error: horseDataErr } = useQuery(allHorseQuery);
 
-    
+
     // Query Init States
-    const [raceDataResult, setRaceDataResult] = useState([]);
-    const [horseDataResult, setHorseDataResult] = useState([]);
+    // const [raceDataResult, setRaceDataResult] = useState([]);
+    // const [horseDataResult, setHorseDataResult] = useState([]);
 
+    const raceTableTitles = [
+        "Race ID",
+        "Race No.",
+        "Start Time",
+        "Venue"
+    ];
+
+    const horseTableTitles = [
+        "Horse ID",
+        "Horse Name",
+        "Horse Rank"
+    ];
     // All Race
-    useEffect(() => {
-        if (!raceDataLoading && raceData && raceData.races.length > 0) {
-            setRaceDataResult(raceData.races);
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (!raceDataLoading && raceData && raceData.races.length > 0) {
+    //         console.log(raceData, 'data');
+    //         setRaceDataResult(raceData.races);
+    //     }
+    // }, []);
 
     // All Horse
-    useEffect(() => {
-        if (!horseDataLoading && horseData && horseData.horses.length > 0) {
-            setHorseDataResult(horseData.horses);
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (!horseDataLoading && horseData && horseData.horses.length > 0) {
+    //         setHorseDataResult(horseData.horses);
+    //     }
+    // }, [horseData]);
 
-    console.log(allRaceErr, 'err');
-    // console.log(horseData, 'HORSEDATA');
-    //////////////////////////////// Event Handlers //////////////////////////////////
-
-    // Races Query
-    const TableRaces = () => {
-        return (
-            <DataTable>
-                <DataTable.Header>
-                    <DataTable.Title >Race ID</DataTable.Title>
-                    <DataTable.Title >Race No.</DataTable.Title>
-                    <DataTable.Title >Start Time</DataTable.Title>
-                    <DataTable.Title >Venue</DataTable.Title>
-                </DataTable.Header>
-
-                {raceDataResult.length > 0 ? (
-                    raceDataResult.map((item, i) => {
-                        return (
-                            <DataTable.Row key={i}>
-                                <DataTable.Cell>{item.id}</DataTable.Cell>
-                                <DataTable.Cell>{item.no}</DataTable.Cell>
-                                <DataTable.Cell >{item.startTime}</DataTable.Cell>
-                                <DataTable.Cell >{item.venue}</DataTable.Cell>
-                            </DataTable.Row>
-                        )
-                    })
-                ) : ""}
-            </DataTable>
-        );
-    };
-
-    // Horses Query
-    const TableHorses = () => {
-        return (
-            <DataTable>
-                <DataTable.Header>
-                    <DataTable.Title >Horse ID</DataTable.Title>
-                    <DataTable.Title >Horse Name</DataTable.Title>
-                    <DataTable.Title >Horse Rank</DataTable.Title>
-                </DataTable.Header>
-                {horseDataResult.length > 0 ? (
-                    horseDataResult.map((item, i) => {
-                        return (
-                            <DataTable.Row key={i}>
-                                <DataTable.Cell>{item.id}</DataTable.Cell>
-                                <DataTable.Cell>{item.name}</DataTable.Cell>
-                                <DataTable.Cell >{item.rank}</DataTable.Cell>
-                            </DataTable.Row>
-                        )
-                    })
-                ) : ""}
-            </DataTable>
-        );
-    };
+    const getTk = AsyncStorage.getItem('token');
+    console.log(getTk, 'token');
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
-        <SafeAreaView 
-        // // style={backgroundStyle}
+        <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+        // style={backgroundStyle}
         >
-            <ScrollView
-                contentInsetAdjustmentBehavior="automatic"
-                // style={backgroundStyle}
-                >
 
-                {/* // Query - All Races */}
-                <View
-                    style={{
-                        backgroundColor: isDarkMode ? Colors.black : Colors.white,
-                    }}>
-                    <Section title="Query - All Races" isDarkMode={isDarkMode}>
-                        Details of all races.
+            {/* // Query - All Races */}
+            <View
+                style={{
+                    backgroundColor: isDarkMode ? Colors.black : Colors.white,
+                }}>
+                <Section title="Query - All Races" isDarkMode={isDarkMode}>
+                    Details of all races.
                 </Section>
-                </View>
-                 <TableRaces />
+            </View>
+            {raceData && raceData.races.length > 0 ? (
+                <CustomDataTable tableTitles={raceTableTitles} tableData={raceData.races} />
+            ) : ""}
 
-                {/* Query - All Horses */}
+            {/* Query - All Horses */}
 
-                <View
-                    style={{
-                        backgroundColor: isDarkMode ? Colors.black : Colors.white,
-                    }}>
-                    <Section title="Query - All Horses" isDarkMode={isDarkMode}>
-                        Details of all horses.
-                    </Section>
-                </View>
-                <TableHorses />
-            </ScrollView>
-        </SafeAreaView>
+            <View
+                style={{
+                    backgroundColor: isDarkMode ? Colors.black : Colors.white,
+                }}>
+                <Section title="Query - All Horses" isDarkMode={isDarkMode}>
+                    Details of all horses.
+                </Section>
+            </View>
+            {horseData && horseData.horses.length > 0 ? (
+                <CustomDataTable tableTitles={horseTableTitles} tableData={horseData.horses} />
+            ) : ""}
+        </ScrollView>
     );
-
 };
 
 const Section = (props) => {

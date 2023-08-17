@@ -26,12 +26,10 @@ const LoginPage = ({ onLogin }) => {
     const login = async () => {
       try {
         const { data } = await loginUser({ variables: { email, password } });
-        console.log(data,'data');
         await AsyncStorage.setItem('token', data.login);
         onLogin();
       } catch (err) {
         setErrDialog(true);
-        console.log(err);
       }
     };
   
