@@ -11,6 +11,7 @@ import {DataTable} from 'react-native-paper';
 import {useQuery} from '@apollo/client';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {usersQuery} from '../graphql/users/query';
+import {UserFeed} from './UserFeed';
 
 const ListUsersPage = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -73,6 +74,7 @@ const ListUsersPage = () => {
         // style={backgroundStyle}
       >
         {/* // Query - Users */}
+        {/* <UserFeed>user feed</UserFeed> */}
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
