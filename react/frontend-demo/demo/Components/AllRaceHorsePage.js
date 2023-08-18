@@ -1,4 +1,4 @@
-import { React } from 'react';
+import { React, useEffect, useState } from 'react';
 import {
     ScrollView,
     StyleSheet,
@@ -7,28 +7,26 @@ import {
     View
 } from 'react-native';
 import CustomDataTable from './CustomDataTable';
-import { useQuery } from '@apollo/client';
+import { useQuery, useReactiveVar } from '@apollo/client';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
     allRaceQuery,
     allHorseQuery
 } from '../graphql/query';
+import { horseListVar } from '../localState';
 
 const AllRaceHorsePage = () => {
     const isDarkMode = useColorScheme() === 'dark';
     const backgroundStyle = {
         backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     };
+    
+    const [raceDataResult, setRaceDataResult] = useState([]);
+    const [horseDataResult, setHorseDataResult] = useState([]);
 
     //////////// Queries ///////////////
     const { loading: raceDataLoading, data: raceData, error: raceDataErr } = useQuery(allRaceQuery);
-    const { loading: horseDataLoading, data: horseData, error: horseDataErr } = useQuery(allHorseQuery);
-
-
-    // Query Init States
-    // const [raceDataResult, setRaceDataResult] = useState([]);
-    // const [horseDataResult, setHorseDataResult] = useState([]);
+    const { loading: horseDataLoading, data: horseData, error: horseDataErr, refetch } = useQuery(allHorseQuery);
 
     const raceTableTitles = [
         "Race ID",
@@ -42,32 +40,45 @@ const AllRaceHorsePage = () => {
         "Horse Name",
         "Horse Rank"
     ];
-    // All Race
-    // useEffect(() => {
-    //     if (!raceDataLoading && raceData && raceData.races.length > 0) {
-    //         console.log(raceData, 'data');
-    //         setRaceDataResult(raceData.races);
-    //     }
-    // }, []);
 
-    // All Horse
-    // useEffect(() => {
-    //     if (!horseDataLoading && horseData && horseData.horses.length > 0) {
-    //         setHorseDataResult(horseData.horses);
-    //     }
-    // }, [horseData]);
+    useEffect(() => {
+        horseListVar(horseData)
+    }), [horseData]
 
-    const getTk = AsyncStorage.getItem('token');
-    console.log(getTk, 'token');
+
+    //All Race
+    useEffect(() => {
+        if (!raceDataLoading && raceData && raceData.races.length > 0) {
+            const data = raceData.races;
+            const dataFix = data.map(obj => {
+                const { [Object.keys(obj)[0]]: _, ...rest } = obj;
+                return rest;
+            });
+            setRaceDataResult(dataFix);
+        }
+    }, [raceData]);
+    
+    //All Horse
+    useEffect(() => {
+        if (!horseDataLoading && horseData && horseData.horses.length > 0) {
+            const dataHorse = horseData.horses;
+            const dataHorseFix = dataHorse.map(obj => {
+                const { [Object.keys(obj)[3]]: _, ...rest } = obj;
+                return rest;
+            });
+            setHorseDataResult(dataHorseFix);
+        }
+    }, [horseData]);
+
+    const horseListInit = useReactiveVar(horseListVar);
+    console.log(horseListInit, 'CACHE_LIST')
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     return (
         <ScrollView
             contentInsetAdjustmentBehavior="automatic"
-        // style={backgroundStyle}
         >
-
             {/* // Query - All Races */}
             <View
                 style={{
@@ -78,8 +89,15 @@ const AllRaceHorsePage = () => {
                 </Section>
             </View>
             {raceData && raceData.races.length > 0 ? (
-                <CustomDataTable tableTitles={raceTableTitles} tableData={raceData.races} />
+                <CustomDataTable tableTitles={raceTableTitles} tableData={raceDataResult} />
             ) : ""}
+
+            {
+                raceDataErr && raceDataErr.message !== '' ?
+                    <Text>{raceDataErr.message}</Text>
+                    :
+                    ""
+            }
 
             {/* Query - All Horses */}
 
@@ -91,8 +109,8 @@ const AllRaceHorsePage = () => {
                     Details of all horses.
                 </Section>
             </View>
-            {horseData && horseData.horses.length > 0 ? (
-                <CustomDataTable tableTitles={horseTableTitles} tableData={horseData.horses} />
+            {horseDataResult && horseDataResult.length > 0 ? (
+                <CustomDataTable tableTitles={horseTableTitles} tableData={horseDataResult} type='horse' />
             ) : ""}
         </ScrollView>
     );

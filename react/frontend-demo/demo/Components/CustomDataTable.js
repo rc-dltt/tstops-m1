@@ -10,7 +10,7 @@ const CustomDataTable = (props) => {
     } = props;
 
     const [page, setPage] = useState(0);
-    const [numberOfItemsPerPageList] = useState([5, 10]);
+    const [numberOfItemsPerPageList] = useState([1, 3, 5]);
     const [itemsPerPage, onItemsPerPageChange] = useState(
         numberOfItemsPerPageList[0]
     );

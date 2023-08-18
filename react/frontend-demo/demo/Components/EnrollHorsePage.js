@@ -5,9 +5,9 @@ import {
     ScrollView,
     View,
     TextInput,
-    Button,
     useColorScheme
 } from 'react-native';
+import {Button} from 'react-native-paper';
 import { useMutation } from '@apollo/client';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { enrollHorseMutation } from '../graphql/mutation';
@@ -78,7 +78,7 @@ const EnrollHorse = () => {
                 placeholder="Enter Horse ID"
                 keyboardType="default"
             />
-            <Button title="Submit" onPress={handleSubmitEnrollHorse} />
+          <Button mode="contained" onPress={handleSubmitEnrollHorse} buttonColor="#424d9c" textColor='#fbde2b' style={{ margin: 12 }}><Text>Submit</Text></Button>
         </ScrollView>
     );
 

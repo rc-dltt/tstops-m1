@@ -5,12 +5,14 @@ import {
     Text,
     useColorScheme,
     View,
-    TextInput,
-    Button
+    TextInput
 } from 'react-native';
-import { useMutation } from '@apollo/client';
+import { useMutation, useReactiveVar } from '@apollo/client';
+import { Dialog, Portal, Button } from 'react-native-paper';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { addHorseMutation } from '../graphql/mutation';
+import { horseListVar } from '../localState';
+import { allHorseQuery } from '../graphql/query';
 
 const AddHorsePage = () => {
     const isDarkMode = useColorScheme() === 'dark';
@@ -19,7 +21,13 @@ const AddHorsePage = () => {
     };
 
     ////////// Mutations //////////////
-    const [addHorse] = useMutation(addHorseMutation);
+    const [addHorse] = useMutation(addHorseMutation, {
+        onCompleted: (data) => {
+            console.log(data, 'Mutaion Data')
+            const currentHorses = horseListVar();
+            horseListVar([...currentHorses, data.addHorse])
+        }
+    });
 
     const [horseNameInput, setHorseNameInput] = useState('');
     const [horseRankInput, setHorseRankInput] = useState('');
@@ -34,13 +42,12 @@ const AddHorsePage = () => {
     };
 
     // Submit - Add Horse
-    const handleSubmitAddHorse = (e) => {
-        e.preventDefault();
+    const handleSubmitAddHorse = () => {
         if (horseNameInput !== "" && horseRankInput !== "") {
             addHorse({
                 variables: {
                     command: {
-                        name: (horseNameInput),
+                        name: horseNameInput,
                         rank: Number(horseRankInput)
                     }
                 }
@@ -51,10 +58,16 @@ const AddHorsePage = () => {
         }
     };
 
+    const successDialogClose = () => {
+        setHorseNameInput('');
+        setHorseRankInput('');
+        setAddHorseSuccess(false);
+    }
+
     return (
         <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+            contentInsetAdjustmentBehavior="automatic"
+            style={backgroundStyle} >
             {/* Mutation - Add Horse */}
 
             < View style={{
@@ -79,8 +92,29 @@ const AddHorsePage = () => {
                 placeholder="Enter Horse Rank"
                 keyboardType="default"
             />
-            <Button title="Submit" onPress={handleSubmitAddHorse} />
-        </ScrollView>
+            <Button mode="contained" style={{ margin: 12 }} onPress={handleSubmitAddHorse} buttonColor="#424d9c" textColor='#fbde2b' title="submit"><Text>Submit</Text></Button>
+            <Portal>
+                <Dialog visible={addHorseSuccess} onDismiss={successDialogClose}>
+                    <Dialog.Title
+                        style={{
+                            color: "green",
+                            textAlignVertical: "center",
+                            textAlign: "center",
+                            fontWeight: 'bold',
+                            fontSize: 18,
+                            margin: 12
+                        }}
+                    >Add Race Success!
+                    </Dialog.Title>
+                    <Dialog.Content>
+                        <Text variant="bodyMedium">Successfully Added Horse - {horseNameInput}</Text>
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                        <Button buttonColor="#424d9c" textColor='#fbde2b' onPress={successDialogClose}>Close</Button>
+                    </Dialog.Actions>
+                </Dialog>
+            </Portal>
+        </ScrollView >
     );
 
 };

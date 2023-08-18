@@ -1,14 +1,9 @@
 import { React, useState } from 'react';
 import {
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
     StyleSheet,
     useColorScheme,
-    Text
 } from 'react-native';
-import {BottomNavigation} from 'react-native-paper';
-import {Icons, AwesomeIcon} from 'react-native-vector-icons';
+import { BottomNavigation } from 'react-native-paper';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AllRaceHorsePage from './AllRaceHorsePage';
 import AddRacePage from './AddRacePage';
@@ -25,10 +20,9 @@ const LandingPage = () => {
 
     const [index, setIndex] = useState(0);
     const [routes] = useState([
-        // { key: 'allRaceHorse', title: 'All Races/Horses', focusedIcon: require("../img/horse-race.png") },
         { key: 'allRaceHorse', title: 'All Races/Horses', focusedIcon: "information-variant" },
-        { key: 'addRace', title: 'Add Race', focusedIcon: 'calendar-edit'},
-        { key: 'addHorse', title: 'Add Horse', focusedIcon: 'horse-variant'},
+        { key: 'addRace', title: 'Add Race', focusedIcon: 'calendar-edit' },
+        { key: 'addHorse', title: 'Add Horse', focusedIcon: 'horse-variant' },
         { key: 'enrollHorse', title: 'Enroll Horse', focusedIcon: 'calendar-cursor' }
     ]);
 
@@ -41,12 +35,12 @@ const LandingPage = () => {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    return (         
-                <BottomNavigation
-                    navigationState={{ index, routes }}
-                    onIndexChange={setIndex}
-                    renderScene={renderScene}
-                />
+    return (
+        <BottomNavigation
+            navigationState={{ index, routes }}
+            onIndexChange={setIndex}
+            renderScene={renderScene}
+        />
     );
 };
 

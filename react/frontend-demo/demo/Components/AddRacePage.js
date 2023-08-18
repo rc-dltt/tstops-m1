@@ -1,14 +1,14 @@
-import { React, useState } from 'react';
+import { React, useState, useCallback } from 'react';
 import {
     StyleSheet,
     useColorScheme,
     ScrollView,
     View,
     TextInput,
-    Button,
     Text
 } from 'react-native';
 import { useMutation } from '@apollo/client';
+import { Dialog, Portal, Button } from 'react-native-paper';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { addRaceMutation } from '../graphql/mutation';
 
@@ -37,10 +37,14 @@ const AddRacePage = () => {
         setRaceVenueInput(input);
     };
 
+    const successDialogClose = () => {
+        setAddRaceSuccess(false);
+    }
+
     // Submit - Add Race
-    const handleSubmitAddRace = (e) => {
-        e.preventDefault();
+    const handleSubmitAddRace = () => {
         if (raceNoInput !== "" && raceTimeInput !== "" && raceVenueInput !== "") {
+
             addRace({
                 variables: {
                     command: {
@@ -90,7 +94,29 @@ const AddRacePage = () => {
                 placeholder="Enter Race Venue"
                 keyboardType="default"
             />
-            <Button title="Submit" onPress={handleSubmitAddRace} />
+            <Button mode="contained" style={{ margin: 12 }} onPress={handleSubmitAddRace} buttonColor="#424d9c" textColor='#fbde2b' title="submit"><Text>Submit</Text></Button>
+
+            {/* <Portal>
+                <Dialog visible={addRaceSuccess} onDismiss={successDialogClose}>
+                    <Dialog.Title
+                        style={{
+                            color: "#AD5142",
+                            textAlignVertical: "center",
+                            textAlign: "center",
+                            fontWeight: 'bold',
+                            fontSize: 18,
+                            margin: 12
+                        }}
+                    >Add Race Success!
+                    </Dialog.Title>
+                    <Dialog.Content>
+                        <Text variant="bodyMedium">Successfully Added Race - {raceNoInput}</Text>
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                        <Button buttonColor="#424d9c" textColor='#fbde2b' onPress={successDialogClose}>Close</Button>
+                    </Dialog.Actions>
+                </Dialog>
+            </Portal> */}
         </ScrollView>
     );
 
